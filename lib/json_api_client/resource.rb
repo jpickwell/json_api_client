@@ -3,19 +3,22 @@ require 'active_support/all'
 require 'active_model'
 
 module JsonApiClient
+
   class Resource
+
     extend ActiveModel::Naming
     extend ActiveModel::Translation
+
     include ActiveModel::Validations
     include ActiveModel::Conversion
     include ActiveModel::Serialization
-
     include Helpers::DynamicAttributes
     include Helpers::Dirty
 
     attr_accessor :last_result_set,
                   :links,
                   :relationships
+
     class_attribute :site,
                     :primary_key,
                     :parser,
@@ -30,9 +33,10 @@ module JsonApiClient
                     :requestor_class,
                     :associations,
                     instance_accessor: false
+
     self.primary_key          = :id
     self.parser               = Parsers::Parser
-    self.paginator            = Paginating::Paginator
+    self.paginator            = Pagination::Paginator
     self.connection_class     = Connection
     self.connection_options   = {}
     self.query_builder        = Query::Builder
@@ -47,7 +51,9 @@ module JsonApiClient
     include Associations::HasOne
 
     class << self
+
       extend Forwardable
+
       def_delegators :_new_scope, :where, :order, :includes, :select, :all, :paginate, :page, :first, :find
 
       # The table name for this resource. i.e. Article -> articles, Person -> people
@@ -252,6 +258,7 @@ module JsonApiClient
           yield(conn) if block_given?
         end
       end
+
     end
 
     # Instantiate a new resource object
@@ -445,5 +452,7 @@ module JsonApiClient
     def relationships_for_serialization
       relationships.as_json_api
     end
+
   end
+
 end

@@ -230,7 +230,7 @@ youngest = Person.sort(age: :asc).all
 oldest = Person.sort(age: :desc).all
 ```
 
-## Paginating
+## Pagination
 
 [See specification](http://jsonapi.org/format/#fetching-pagination)
 
